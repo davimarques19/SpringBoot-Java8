@@ -11,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.davimarques.curso.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 @Entity
 @Table(name = "tb_order")
@@ -31,14 +31,18 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_id")
 	private User client;
 
+	
+	private Integer orderStatus;
+	
 	public Order() {
 
 	}
 
-	public Order(Long id, Instant date, User client) {
+	public Order(Long id, Instant date, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.date = date;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -56,6 +60,16 @@ public class Order implements Serializable {
 
 	public void setDate(Instant date) {
 		this.date = date;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	public User getClient() {
